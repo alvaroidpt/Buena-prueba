@@ -11,6 +11,8 @@ import importExportFeature from '@adminjs/import-export';
 
 // Importamos desde otras ubicaciones
 import {authenticate} from './BBDD/autenticador.js'
+import createDatabaseConnection from './BBDD/conexion.js';
+
 
 const PORT = 3000
 
@@ -21,14 +23,9 @@ AdminJS.registerAdapter({
 
 const componentLoader = new ComponentLoader();
 
-// Conectamos con la BBDD
-const db = await new Adapter('postgresql', {
-  connectionString: 'postgres://alvaro:Alvaro123@10.2.21.115:5432/pruba_alvaro',
-  database: 'pruba_alvaro',
-}).init();
-
 const start = async () => {
   const app = express()
+  const db = await createDatabaseConnection()
 
   //Añadimos los recursos que aparecen en adminJS
 
