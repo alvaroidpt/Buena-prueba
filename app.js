@@ -10,8 +10,7 @@ import passwordsFeature from '@adminjs/passwords';
 import importExportFeature from '@adminjs/import-export';
 
 // Importamos desde otras ubicaciones
-import {authenticate} from './BBDD/autenticador.js'
-import createDatabaseConnection from './BBDD/conexion.js';
+import { createDatabaseConnection, authenticate } from './BBDD/conexion.js';
 
 
 const PORT = 3000
