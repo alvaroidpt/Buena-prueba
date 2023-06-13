@@ -20,6 +20,7 @@ AdminJS.registerAdapter({
   Resource,
 })
 
+
 const componentLoader = new ComponentLoader();
 
 const start = async () => {
@@ -58,14 +59,14 @@ const start = async () => {
         },
         features: [
           passwordsFeature({
-          componentLoader,
-          properties: { password: 'newPassword', encryptedPassword: 'password' },
-          hash: argon2.hash,
-        }),
-        importExportFeature({
-          componentLoader,
-        }),
-      ],
+            componentLoader,
+            properties: { password: 'newPassword', encryptedPassword: 'password' },
+            hash: argon2.hash,
+          }),
+          importExportFeature({
+            componentLoader,
+          }),
+        ],
       },
       /// TABLA SESION
       {
@@ -143,6 +144,31 @@ const start = async () => {
               path: 'equipo',
               select: 'nombre',
             },
+          },
+        },
+        features: [
+          importExportFeature({
+            componentLoader,
+          }),
+        ],
+      },
+
+      /// TABLA JSON
+      {
+        resource: db.table('json'),
+        options: {
+          properties: {
+            id: {
+              isVisible: true,
+            },
+            info: {
+              isVisible: true,
+              type: 'json',
+            },
+          },
+          parent: {
+            name: 'JSON',
+            icon: 'Database',
           },
         },
         features: [
