@@ -17,6 +17,7 @@
     "@adminjs/sequelize": "^4.0.0",
     "@adminjs/sql": "^2.0.3",
     "accesscontrol": "^2.2.1",
+    "admin-bro": "^4.0.1",
     "adminjs": "^7.0.6",
     "argon2": "^0.30.3",
     "bcrypt": "^5.1.0",
