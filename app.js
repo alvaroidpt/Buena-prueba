@@ -165,6 +165,8 @@ const start = async () => {
               isVisible: true,
               type: 'json',
             },
+            'info.items': {type: 'string'},
+            'info.customer': {type: 'string'},
           },
           parent: {
             name: 'JSON',
