@@ -27,9 +27,11 @@
     "express": "^4.18.2",
     "express-formidable": "^1.2.0",
     "express-session": "^1.17.3",
+    "jsonschema": "^1.4.1",
     "nodemon": "^2.0.22",
     "pg": "^8.11.0",
     "react": "^18.2.0",
+    "react-jsonschema-form": "^1.8.1",
     "sequelize": "^6.32.0",
     "tslib": "^2.5.2"
   }
