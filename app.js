@@ -3,39 +3,29 @@ import AdminJSExpress from '@adminjs/express'
 import express from 'express'
 import Connect from 'connect-pg-simple'
 import session from 'express-session'
-import { Resource, Database } from '@adminjs/sql'
 import argon2 from 'argon2';
 import { ComponentLoader } from 'adminjs'
 import passwordsFeature from '@adminjs/passwords';
 import importExportFeature from '@adminjs/import-export';
 
 // Importamos desde otras ubicaciones
-import { /*createDatabaseConnection,*/ authenticate } from './BBDD/conexion.js';
+import { authenticate } from './BBDD/conexion.js';
 
 import { createSequelizeConnection } from './BBDD/conexion_seq.js'
 import * as AdminJSSequelize from '@adminjs/sequelize';
 
 
-
 const PORT = 3000
-
-// AdminJS.registerAdapter({
-//   Database,
-//   Resource,
-// })
 
 AdminJS.registerAdapter({
   Database: AdminJSSequelize.Database,
   Resource: AdminJSSequelize.Resource,
 })
 
-
-
 const componentLoader = new ComponentLoader();
 
 const start = async () => {
   const app = express();
-  // const db = await createDatabaseConnection();
   const db_seq = await createSequelizeConnection();
 
   //Añadimos los recursos que aparecen en adminJS
