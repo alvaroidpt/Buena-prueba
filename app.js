@@ -1,16 +1,22 @@
 import AdminJS from 'adminjs'
 import AdminJSExpress from '@adminjs/express'
-import express from 'express'
-import Connect from 'connect-pg-simple'
-import session from 'express-session'
+
 import { Adapter, Resource, Database } from '@adminjs/sql'
-import argon2 from 'argon2';
+import * as AdminJSSequelize from '@adminjs/sequelize';
+
 import { ComponentLoader } from 'adminjs'
 import passwordsFeature from '@adminjs/passwords';
 import importExportFeature from '@adminjs/import-export';
 
+import express from 'express'
+import session from 'express-session'
+import Connect from 'connect-pg-simple'
+
+import argon2 from 'argon2';
+
 // Importamos desde otras ubicaciones
 import { createDatabaseConnection, authenticate } from './BBDD/conexion.js';
+import db_seq from './sequelize/models/index.js';
 
 
 const PORT = 3000
@@ -20,8 +26,29 @@ AdminJS.registerAdapter({
   Resource,
 })
 
+AdminJS.registerAdapter({
+  Database: AdminJSSequelize.Database,
+  Resource: AdminJSSequelize.Resource,
+})
 
 const componentLoader = new ComponentLoader();
+
+db_seq.sequelize.sync()
+  .then(() => {
+    console.log("Synced db.");
+  })
+  .catch((err) => {
+    console.log("Failed to sync db: " + err.message);
+  });
+
+  const tutorial = {
+    title: "jaime",
+    description: "chupa chups",
+    published: false
+  }
+
+  console.log("---" + typeof db_seq.TutorialClass)
+  db_seq.TutorialClass.create(tutorial)
 
 const start = async () => {
   const app = express()
