@@ -3,7 +3,7 @@ import AdminJSExpress from '@adminjs/express'
 import express from 'express'
 import Connect from 'connect-pg-simple'
 import session from 'express-session'
-import { Adapter, Resource, Database } from '@adminjs/sql'
+import { Resource, Database } from '@adminjs/sql'
 import argon2 from 'argon2';
 import { ComponentLoader } from 'adminjs'
 import passwordsFeature from '@adminjs/passwords';
@@ -12,8 +12,8 @@ import importExportFeature from '@adminjs/import-export';
 // Importamos desde otras ubicaciones
 import { createDatabaseConnection, authenticate } from './BBDD/conexion.js';
 
-import * as AdminJSSequelize from '@adminjs/sequelize'
-import { Category } from './BBDD/entidad.js'
+import { createSequelizeConnection } from './BBDD/conexion_seq.js'
+
 
 
 const PORT = 3000
@@ -23,20 +23,14 @@ AdminJS.registerAdapter({
   Resource,
 })
 
-AdminJS.registerAdapter({
-  Resource: AdminJSSequelize.Resource,
-  Database: AdminJSSequelize.Database,
-})
 
 
 const componentLoader = new ComponentLoader();
 
 const start = async () => {
-  const app = express()
-  const db = await createDatabaseConnection()
-  // const adminOptions = {
-  //   resources: [Category],
-  // }
+  const app = express();
+  const db = await createDatabaseConnection();
+  const db_seq = await createSequelizeConnection();
 
   //Añadimos los recursos que aparecen en adminJS
 
@@ -176,8 +170,8 @@ const start = async () => {
               isVisible: true,
               type: 'json',
             },
-            'info.items': {type: 'string'},
-            'info.customer': {type: 'string'},
+            'info.items': { type: 'string' },
+            'info.customer': { type: 'string' },
           },
           parent: {
             name: 'JSON',
@@ -189,6 +183,10 @@ const start = async () => {
             componentLoader,
           }),
         ],
+      },
+      /// TABLA SEQUELIZE
+      {
+        resource: db_seq.models.User,
       },
     ],
   });
