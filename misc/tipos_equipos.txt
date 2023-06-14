@@ -1,0 +1,5 @@
+name, type, can be null, key
+id, int, not null, pk
+name, string, not null, 
+num_slots, int, not null, 
+field_config, json, null,
