@@ -8,6 +8,10 @@ export const createUserModel = (sequelize) => {
             primaryKey: true,
             autoIncrement: true,
         },
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
         password: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -15,14 +19,34 @@ export const createUserModel = (sequelize) => {
         role: {
             type: DataTypes.STRING,
         },
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
+
     },
         {
             tableName: 'users',
+            timestamps: false,
         });
 
     return user;
 };
+
+export const createJsonModel = (sequelize) => {
+    const json = sequelize.define('Json', {
+        id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            primaryKey: true,
+            autoIncrement: true,
+        },
+        info: {
+            type: DataTypes.JSON,
+            allowNull: false,
+        },
+    },
+        {
+            tableName: 'json',
+            timestamps: false,
+        });
+
+    return json;
+};
+

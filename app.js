@@ -13,14 +13,20 @@ import importExportFeature from '@adminjs/import-export';
 import { /*createDatabaseConnection,*/ authenticate } from './BBDD/conexion.js';
 
 import { createSequelizeConnection } from './BBDD/conexion_seq.js'
+import * as AdminJSSequelize from '@adminjs/sequelize';
 
 
 
 const PORT = 3000
 
+// AdminJS.registerAdapter({
+//   Database,
+//   Resource,
+// })
+
 AdminJS.registerAdapter({
-  Database,
-  Resource,
+  Database: AdminJSSequelize.Database,
+  Resource: AdminJSSequelize.Resource,
 })
 
 
@@ -37,156 +43,58 @@ const start = async () => {
   const admin = new AdminJS({
     componentLoader,
     resources: [
-      // {
-      //   // TABLA USUARIOS
-      //   resource: db.table('users'),
-      //   options: {
-      //     sort: {
-      //       sortBy: 'id',
-      //       direction: 'asc',
-      //     },
-      //     properties: {
-      //       id: { isVisible: false },
-      //       name: { isRequired: true },
-      //       newPassword: { isRequired: true },
-      //       role: {
-      //         availableValues: [
-      //           { label: 'admin', value: 'admin' },
-      //           { label: 'usuario', value: 'usuario' },
-      //           { label: 'invitado', value: 'invitado' },
-      //         ],
-      //       },
-      //     },
-      //     parent: {
-      //       name: 'Usuarios',
-      //       icon: 'User',
-      //     },
-      //   },
-      //   features: [
-      //     passwordsFeature({
-      //       componentLoader,
-      //       properties: { password: 'newPassword', encryptedPassword: 'password' },
-      //       hash: argon2.hash,
-      //     }),
-      //     importExportFeature({
-      //       componentLoader,
-      //     }),
-      //   ],
-      // },
-      // /// TABLA SESION
-      // {
-      //   resource: db.table('session'),
-      //   options: {
-      //     properties: {
-      //       sess: { isVisible: false },
-      //     },
-      //     sort: {
-      //       sortBy: 'sid',
-      //       direction: 'asc',
-      //     },
-      //     parent: {
-      //       name: 'Sesión',
-      //       icon: 'Table',
-      //     },
-      //   },
-      //   features: [
-      //     importExportFeature({
-      //       componentLoader,
-      //     }),
-      //   ],
-      // },
-      // /// TABLA EQUIPO
-      // {
-      //   resource: db.table('equipo'),
-      //   options: {
-      //     properties: {
-      //       id: {
-      //         isVisible: { list: true, show: true, edit: true },
-      //       },
-      //     },
-      //     parent: {
-      //       name: 'Juego',
-      //       icon: 'Folder',
-      //     },
-      //   },
-      //   features: [
-      //     importExportFeature({
-      //       componentLoader,
-      //     }),
-      //   ],
-      // },
-      // /// TABLA JUGADORES
-      // {
-      //   resource: db.table('jugadores'),
-      //   options: {
-      //     sort: {
-      //       sortBy: 'equipo',
-      //       direction: 'asc',
-      //     },
-      //     properties: {
-      //       nombre: {
-      //         position: 1,
-      //       },
-      //       id: { isVisible: false },
-      //       equipo: {
-      //         isVisible: true,
-      //         isRequired: true,
-      //         availableValues: async () => {
-      //           const equipos = await db.table('equipo').find()
-      //           return equipos.map((equipo) => ({
-      //             value: equipo.id,
-      //             label: equipo.nombre,
-      //           }))
-      //         },
-      //       },
-      //     },
-      //     parent: {
-      //       name: 'Juego',
-      //     },
-      //     populate: {
-      //       path: 'equipo',
-      //       populate: {
-      //         path: 'equipo',
-      //         select: 'nombre',
-      //       },
-      //     },
-      //   },
-      //   features: [
-      //     importExportFeature({
-      //       componentLoader,
-      //     }),
-      //   ],
-      // },
 
-      // /// TABLA JSON
-      // {
-      //   resource: db.table('json'),
-      //   options: {
-      //     properties: {
-      //       id: {
-      //         isVisible: true,
-      //       },
-      //       info: {
-      //         isVisible: true,
-      //         type: 'json',
-      //       },
-      //       'info.items': { type: 'string' },
-      //       'info.customer': { type: 'string' },
-      //     },
-      //     parent: {
-      //       name: 'JSON',
-      //       icon: 'Database',
-      //     },
-      //   },
-      //   features: [
-      //     importExportFeature({
-      //       componentLoader,
-      //     }),
-      //   ],
-      // },
-      /// TABLA SEQUELIZE
+      /// TABLA USUARIOS
       {
         resource: db_seq.models.User,
+        options: {
+          sort: {
+            sortBy: 'id',
+            direction: 'asc',
+          },
+          properties: {
+            id: { isVisible: false },
+            name: { isRequired: true },
+            newPassword: { isRequired: true },
+            password: { isVisible: false, isRequired: false },
+            role: {
+              availableValues: [
+                { label: 'admin', value: 'admin' },
+                { label: 'usuario', value: 'usuario' },
+                { label: 'invitado', value: 'invitado' },
+              ],
+            },
+          },
+          parent: {
+            name: 'Usuarios',
+            icon: 'User',
+          },
+        },
+        features: [
+          passwordsFeature({
+            componentLoader,
+            properties: { password: 'newPassword', encryptedPassword: 'password' },
+            hash: argon2.hash,
+          }),
+          importExportFeature({
+            componentLoader,
+          }),
+        ],
+      },
+      /// TABLA JSON
+      {
+        resource: db_seq.models.Json,
+        options: {
+          parent: {
+            name: 'JSON',
+            icon: 'Database',
+          },
+        },
+        features: [
+          importExportFeature({
+            componentLoader,
+          }),
+        ],
       },
     ],
   });
