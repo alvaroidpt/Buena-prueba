@@ -1,4 +1,4 @@
-function tutorials(sequelize, Sequelize) {
+export default (sequelize, Sequelize) => {
     const Tutorial = sequelize.define("tutorial", {
       title: {
         type: Sequelize.STRING
@@ -14,7 +14,3 @@ function tutorials(sequelize, Sequelize) {
     console.log("-"+typeof Tutorial)
     return Tutorial;
   };
-
-  
-
-export default tutorials
