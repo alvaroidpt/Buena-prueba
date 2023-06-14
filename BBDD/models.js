@@ -79,5 +79,55 @@ export const createEquiposModel = (sequelize) => {
     return equipos;
 };
 
+export const createGruposModel = (sequelize) => {
+    const grupos = sequelize.define('Grupos', {
+        id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            primaryKey: true,
+            autoIncrement: true,
+        },
+        nombre: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+    },
+    {
+        tableName: 'grupos',
+        timestamps: false,
+    });
+
+    return grupos;
+};
+
+export const createPersonasModel = (sequelize) => {
+    const personas = sequelize.define('Personas', {
+        id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            primaryKey: true,
+            autoIncrement: true,
+        },
+        nombre: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        grupo: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'grupos',
+                key: 'id',
+            },
+        },
+    },
+    {
+        tableName: 'personas',
+        timestamps: false,
+    });
+
+    return personas;
+};
+
 
 

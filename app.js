@@ -106,6 +106,36 @@ const start = async () => {
           }),
         ],
       },
+      /// TABLA GRUPOS
+      {
+        resource: db_seq.models.Grupos,
+        options: {
+          parent: {
+            name: 'Tablas Relaciones',
+            icon: 'List',
+          },
+        },
+        features: [
+          importExportFeature({
+            componentLoader,
+          }),
+        ],
+      },
+      /// TABLAS PERSONAS
+      {
+        resource: db_seq.models.Personas,
+        options: {
+          parent: {
+            name: 'Tablas Relaciones',
+            icon: 'List',
+          },
+        },
+        features: [
+          importExportFeature({
+            componentLoader,
+          }),
+        ],
+      },
     ],
   });
 
