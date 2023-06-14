@@ -12,6 +12,9 @@ import importExportFeature from '@adminjs/import-export';
 // Importamos desde otras ubicaciones
 import { createDatabaseConnection, authenticate } from './BBDD/conexion.js';
 
+import * as AdminJSSequelize from '@adminjs/sequelize'
+import { Category } from './BBDD/entidad.js'
+
 
 const PORT = 3000
 
@@ -20,12 +23,20 @@ AdminJS.registerAdapter({
   Resource,
 })
 
+AdminJS.registerAdapter({
+  Resource: AdminJSSequelize.Resource,
+  Database: AdminJSSequelize.Database,
+})
+
 
 const componentLoader = new ComponentLoader();
 
 const start = async () => {
   const app = express()
   const db = await createDatabaseConnection()
+  // const adminOptions = {
+  //   resources: [Category],
+  // }
 
   //Añadimos los recursos que aparecen en adminJS
 
