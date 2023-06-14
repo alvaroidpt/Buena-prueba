@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize';
-import { createUserModel, createJsonModel,  } from './models.js';
+import { createUserModel, createJsonModel, createEquiposModel  } from './models.js';
 
 export const createSequelizeConnection = async () => {
   const sequelize = new Sequelize({
@@ -14,8 +14,8 @@ export const createSequelizeConnection = async () => {
   // Aquí puedes definir tus modelos de Sequelize y realizar otras configuraciones según tus necesidades
 
   const user = createUserModel(sequelize);
-
   const json = createJsonModel(sequelize);
+  const equipos = createEquiposModel(sequelize);
 
 
   // Sincronizar los modelos con la base de datos

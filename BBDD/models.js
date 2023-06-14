@@ -50,3 +50,34 @@ export const createJsonModel = (sequelize) => {
     return json;
 };
 
+export const createEquiposModel = (sequelize) => {
+    const equipos = sequelize.define('Equipos', {
+        id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            primaryKey: true,
+            autoIncrement: true,
+        },
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        num_slots: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        field_config: {
+            type: DataTypes.JSON,
+            allowNull: true,
+        },
+    },
+        {
+            tableName: 'tipos_equipos',
+            timestamps: false,
+        });
+
+    return equipos;
+};
+
+
+

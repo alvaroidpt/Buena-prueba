@@ -86,6 +86,26 @@ const start = async () => {
           }),
         ],
       },
+      /// TABLA TIPOS_EQUIPOS
+      {
+        resource: db_seq.models.Equipos,
+        options: {
+          properties: {
+            field_config: {
+              type: 'textarea',
+            },
+          },
+          parent: {
+            name: 'Tablas Maestras',
+            icon: 'Folder',
+          },
+        },
+        features: [
+          importExportFeature({
+            componentLoader,
+          }),
+        ],
+      },
     ],
   });
 
