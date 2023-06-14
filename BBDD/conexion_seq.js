@@ -13,7 +13,7 @@ export const createSequelizeConnection = async () => {
 
   // Aquí puedes definir tus modelos de Sequelize y realizar otras configuraciones según tus necesidades
 
-const User = createUserModel(sequelize);
+const user = createUserModel(sequelize);
 
 
   // Sincronizar los modelos con la base de datos

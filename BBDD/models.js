@@ -1,7 +1,7 @@
 import { Sequelize, DataTypes } from 'sequelize';
 
 export const createUserModel = (sequelize) => {
-    const User = sequelize.define('User', {
+    const user = sequelize.define('User', {
         id: {
             type: DataTypes.INTEGER,
             allowNull: false,
@@ -24,5 +24,5 @@ export const createUserModel = (sequelize) => {
             tableName: 'users',
         });
 
-    return User;
+    return user;
 };
