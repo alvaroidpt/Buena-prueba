@@ -92,10 +92,10 @@ export const createGruposModel = (sequelize) => {
             allowNull: false,
         },
     },
-    {
-        tableName: 'grupos',
-        timestamps: false,
-    });
+        {
+            tableName: 'grupos',
+            timestamps: false,
+        });
 
     return grupos;
 };
@@ -121,13 +121,80 @@ export const createPersonasModel = (sequelize) => {
             },
         },
     },
-    {
-        tableName: 'personas',
-        timestamps: false,
-    });
+        {
+            tableName: 'personas',
+            timestamps: false,
+        });
 
     return personas;
 };
 
+// Pruebas con sequelize para relaciones entre tablas
+
+export const createEquipoSisModel = (sequelize) => {
+    const equipoSis = sequelize.define('EquipoSis', {
+        id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            primaryKey: true,
+            autoIncrement: true,
+        },
+        nombre: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+    },
+        {
+            tableName: 'equipoSis',
+            timestamps: false,
+        });
+
+    return equipoSis;
+};
+
+export const createSistemasModel = (sequelize) => {
+    const sistemas = sequelize.define('Sistemas', {
+        id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            primaryKey: true,
+            autoIncrement: true,
+        },
+        nombre: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+    },
+        {
+            tableName: 'sistemas',
+            timestamps: false,
+        });
+
+    return sistemas;
+};
+
+export const createRelacionesModel = (sequelize) => {
+    const relaciones = sequelize.define('Relaciones', {
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
+        },
+        EquipoSisId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        SistemaId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+    },
+        {
+            tableName: 'relaciones',
+            timestamps: false,
+        });
+
+    return relaciones;
+};
 
 

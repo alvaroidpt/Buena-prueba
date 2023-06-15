@@ -28,6 +28,7 @@ const start = async () => {
   const app = express();
   const db_seq = await createSequelizeConnection();
 
+
   //Añadimos los recursos que aparecen en adminJS
 
   const admin = new AdminJS({
