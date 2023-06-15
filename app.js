@@ -1,23 +1,19 @@
 import AdminJS from 'adminjs'
 import AdminJSExpress from '@adminjs/express'
-
-import * as AdminJSSequelize from '@adminjs/sequelize';
-
+import express from 'express'
+import Connect from 'connect-pg-simple'
+import session from 'express-session'
+import argon2 from 'argon2';
 import { ComponentLoader } from 'adminjs'
 import passwordsFeature from '@adminjs/passwords';
 import importExportFeature from '@adminjs/import-export';
 
-import express from 'express'
-import session from 'express-session'
-import Connect from 'connect-pg-simple'
-
-import argon2 from 'argon2';
-
 // Importamos desde otras ubicaciones
-import { createDatabaseConnection, authenticate } from './BBDD/conexion.js';
-import { sequelize } from './sequelize_b/database/db.js';
-import { Cat } from './sequelize_b/model/cat.js';
-import Dog from './sequelize_b/model/dog.js'
+import { authenticate } from './BBDD/conexion.js';
+
+import { createSequelizeConnection } from './BBDD/conexion_seq.js'
+import * as AdminJSSequelize from '@adminjs/sequelize';
+
 
 const PORT = 3000
 
@@ -28,34 +24,118 @@ AdminJS.registerAdapter({
 
 const componentLoader = new ComponentLoader();
 
-sequelize.sync()
-  .then(() => {
-    console.log("Synced db.");
-  })
-  .catch((err) => {
-    console.log("Failed to sync db: " + err.message);
-  });
-
-  const cat = {
-    name: "supreme",
-    email: "supreme@cat.com",
-    password: "whiskas"
-  }
-
-  console.log("---" + typeof Cat)
-  Cat.create(cat)
-
 const start = async () => {
-  const app = express()
+  const app = express();
+  const db_seq = await createSequelizeConnection();
 
   //Añadimos los recursos que aparecen en adminJS
 
   const admin = new AdminJS({
     componentLoader,
     resources: [
+
+      /// TABLA USUARIOS
       {
-        resource: Cat,
-      }, 
+        resource: db_seq.models.User,
+        options: {
+          sort: {
+            sortBy: 'id',
+            direction: 'asc',
+          },
+          properties: {
+            id: { isVisible: false },
+            name: { isRequired: true },
+            newPassword: { isRequired: true },
+            password: { isVisible: false, isRequired: false },
+            role: {
+              availableValues: [
+                { label: 'admin', value: 'admin' },
+                { label: 'usuario', value: 'usuario' },
+                { label: 'invitado', value: 'invitado' },
+              ],
+            },
+          },
+          parent: {
+            name: 'Usuarios',
+            icon: 'User',
+          },
+        },
+        features: [
+          passwordsFeature({
+            componentLoader,
+            properties: { password: 'newPassword', encryptedPassword: 'password' },
+            hash: argon2.hash,
+          }),
+          importExportFeature({
+            componentLoader,
+          }),
+        ],
+      },
+      /// TABLA JSON
+      {
+        resource: db_seq.models.Json,
+        options: {
+          parent: {
+            name: 'JSON',
+            icon: 'Database',
+          },
+        },
+        features: [
+          importExportFeature({
+            componentLoader,
+          }),
+        ],
+      },
+      /// TABLA TIPOS_EQUIPOS
+      {
+        resource: db_seq.models.Equipos,
+        options: {
+          properties: {
+            field_config: {
+              type: 'textarea',
+            },
+          },
+          parent: {
+            name: 'Tablas Maestras',
+            icon: 'Folder',
+          },
+        },
+        features: [
+          importExportFeature({
+            componentLoader,
+          }),
+        ],
+      },
+      /// TABLA GRUPOS
+      {
+        resource: db_seq.models.Grupos,
+        options: {
+          parent: {
+            name: 'Tablas Relaciones',
+            icon: 'List',
+          },
+        },
+        features: [
+          importExportFeature({
+            componentLoader,
+          }),
+        ],
+      },
+      /// TABLAS PERSONAS
+      {
+        resource: db_seq.models.Personas,
+        options: {
+          parent: {
+            name: 'Tablas Relaciones',
+            icon: 'List',
+          },
+        },
+        features: [
+          importExportFeature({
+            componentLoader,
+          }),
+        ],
+      },
     ],
   });
 
