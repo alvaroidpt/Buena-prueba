@@ -44,8 +44,8 @@ export const createSequelizeConnection = async () => {
   const sistemasRelacionados = await equipo1.getSistemas();
   console.log('\nESTO DE AQUÍ: ' + sistemasRelacionados);
 
-  const resul1 = await sistema1.getEquiposSis();
-  console.log('\nAHORA ESTAMOS AQUÍ' + resul1);
+  // const resul1 = await sistema1.getEquiposSis();
+  // console.log('\nAHORA ESTAMOS AQUÍ' + resul1);
 
 
   // Sincronizamos los modelos con la base de datos
