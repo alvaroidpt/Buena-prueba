@@ -1,4 +1,4 @@
-import { Sequelize } from 'sequelize';
+import Sequelize from 'sequelize';
 import { createUserModel, createJsonModel, createEquiposModel, createGruposModel, createPersonasModel, createEquipoSisModel, createSistemasModel, createRelacionesModel } from './models.js';
 
 export const createSequelizeConnection = async () => {
@@ -36,13 +36,16 @@ export const createSequelizeConnection = async () => {
   const equipo2 = await equipoSis.create({ nombre: 'Equipo 2' });
 
 
-  // Relacionar los registros mediante la tabla relaciones
-  await equipo1.addSistemas([sistema1, sistema2]); // Relacionar equipo1 con sistema1 y sistema2
-  await equipo2.addSistemas(sistema1); // Relacionar equipo2 con sistema1
+  // Relacionamos los registros mediante la tabla relaciones
+  await equipo1.addSistemas([sistema1, sistema2]); // Relacionamos equipo1 con sistema1 y sistema2
+  await equipo2.addSistemas(sistema1); // Relacionamos equipo2 con sistema1
 
   // Obtener los sistemas relacionados con un equipo
   const sistemasRelacionados = await equipo1.getSistemas();
-  console.log("ESTO DE AQUÍ: " + sistemasRelacionados);
+  console.log('\nESTO DE AQUÍ: ' + sistemasRelacionados);
+
+  const resul1 = await sistema1.getEquiposSis();
+  console.log('\nAHORA ESTAMOS AQUÍ' + resul1);
 
 
   // Sincronizamos los modelos con la base de datos
